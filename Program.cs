@@ -4,6 +4,8 @@ using Musicana.Api.Data;
 using Musicana.Api.DependencyInjection;
 using Musicana.Api.Repositories;
 using Musicana.Api.Services;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,7 +36,8 @@ builder.Services.AddDbContext<MusicanaDbContext>(options =>
     if (isDevelopment)
         options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
     else
-        options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
+        options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
+            .ConfigureWarnings(w => w.Ignore(RelationalEventId.PendingModelChangesWarning));
 });
 
 var app = builder.Build();
