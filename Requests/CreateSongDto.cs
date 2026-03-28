@@ -11,7 +11,7 @@ public class CreateSongDto
     public string Title { get; set; } = null!;
 
     [Required(ErrorMessage = "Genre is required")]
-    [StringLength(50, MinimumLength = 3, ErrorMessage = "Genre must be between 3 and 50 characters")]
+    [EnumDataType(typeof(SongGenres), ErrorMessage = "Invalid Song genre")]
     public SongGenres Genre { get; set; }
 
     [StringLength(1000, ErrorMessage = "Description cannot exceed 1000 characters")]

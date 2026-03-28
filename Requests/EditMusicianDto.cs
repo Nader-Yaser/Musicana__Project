@@ -12,6 +12,8 @@ public class EditMusicianDto
     [DisplayName("Musician Name")]
     [RegularExpression(@"^[a-zA-Z\s]+$", ErrorMessage = "Name can only contain letters and spaces")]
     public string Name { get; set; }
+
+    [EnumDataType(typeof(MusicianGenre), ErrorMessage = "Invalid Musician genre")]
     public MusicianGenre? Genre { get; set; }
     [Required]
     [DataType(DataType.Date)]

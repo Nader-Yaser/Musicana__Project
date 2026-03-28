@@ -15,7 +15,7 @@ public class CreateMusicianDto
 
     [Required(ErrorMessage = "Genre is required")]
     [DisplayName("Musician Genre")]
-    [StringLength(30, MinimumLength = 3, ErrorMessage = "Genre must be between 3 and 30 characters")]
+    [EnumDataType(typeof(MusicianGenre), ErrorMessage = "Invalid Musician genre")]
     public MusicianGenre Genre { get; set; }
     [Required(ErrorMessage = "BirthDate is required")]
     [DataType(DataType.Date)]

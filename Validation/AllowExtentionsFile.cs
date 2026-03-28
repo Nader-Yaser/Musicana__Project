@@ -8,8 +8,11 @@ public class AllowedAudioExtensionsAttribute : ValidationAttribute
 
     protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
     {
+        if (value is null)
+            return ValidationResult.Success;
+
         if (value is not IFormFile file)
-            return new ValidationResult("Audio file is required");
+            return new ValidationResult("Invalid file");
 
         var extension = Path.GetExtension(file.FileName).ToLower();
         if (!_extensions.Contains(extension))

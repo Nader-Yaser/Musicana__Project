@@ -16,9 +16,9 @@ public class EditSongDto
     public double? Duration { get; set; }
 
     [Required(ErrorMessage = "Genre is required")]
-    [StringLength(50, MinimumLength = 3, ErrorMessage = "Genre must be between 3 and 50 characters")]
+    [EnumDataType(typeof(SongGenres), ErrorMessage = "Invalid Song genre")]
     public SongGenres Genre { get; set; } 
 
     [AllowedAudioExtensions]
-    public IFormFile? FormFile { get; set; }
+    public IFormFile? FormFile { get; set; } 
 }
