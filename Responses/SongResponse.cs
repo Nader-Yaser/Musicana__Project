@@ -11,6 +11,7 @@ public class SongResponse
     public double Duration { get; set; }
     public SongGenres Genre { get; set; }
     public string FileUrl { get; set; }
+    public List<string> musicians { get; set; } = new List<string>();
     private SongResponse() { }
 
     public static SongResponse FromModel(Song song, HttpRequest request)
@@ -22,7 +23,10 @@ public class SongResponse
             Genre = song.Genre,
             Duration = song.Duration,
             Description = song.Description,
-            FileUrl = $"{request.Scheme}://{request.Host}{song.FilePath}"
+            FileUrl = $"{request.Scheme}://{request.Host}{song.FilePath}",
+            musicians = song.musician_Songs?
+            .Select(ms => ms.Musician.Name)
+            .ToList() ?? new List<string>()
         };
     }
 

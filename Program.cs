@@ -22,6 +22,17 @@ builder.Services.AddControllers()
 
         options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
     });
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
+});
+
 builder.Services.MusicianServices();
 builder.Services.SongServices();
 builder.Services.Song_MusicianService();
@@ -44,6 +55,8 @@ builder.Services.AddDbContext<MusicanaDbContext>(options =>
 
 var app = builder.Build();
 
+app.UseCors("AllowAll");
+
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<MusicanaDbContext>();
@@ -59,11 +72,13 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseStaticFiles();
-
 app.UseSwagger();
 app.UseSwaggerUI();
 
+app.UseStaticFiles();
+app.UseCors("AllowAll");
+app.UseAuthentication();
+app.UseAuthorization();
 app.MapControllers();
 
 app.Run();

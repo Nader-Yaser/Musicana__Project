@@ -16,24 +16,34 @@ public class SongRepo : ISongRepo
 
     public async Task<Song?> GetSongByIdAsync(int songId)
     {
-        return await _context.Songs.FirstOrDefaultAsync(s => s.Id == songId);
+        return await _context.Songs
+            .Include(s => s.musician_Songs)
+            .ThenInclude(ms => ms.Musician)
+            .FirstOrDefaultAsync(s => s.Id == songId);
     }
 
     public async Task<IEnumerable<Song>> GetSongByTitleAsync(string title)
     {
-        return await _context.Songs.
-            Where(s => s.Title.ToLower().Contains(title.ToLower()))
+        return await _context.Songs
+            .Include(s => s.musician_Songs)
+            .ThenInclude(ms => ms.Musician)
+            .Where(s => s.Title.ToLower().Contains(title.ToLower()))
             .ToListAsync();
     }
 
     public async Task<IEnumerable<Song>> GetSongsAsync()
     {
-        return await _context.Songs.ToListAsync();
+        return await _context.Songs
+            .Include(s => s.musician_Songs)
+            .ThenInclude(ms => ms.Musician)
+            .ToListAsync();
     }
 
     public async Task<IEnumerable<Song>> GetSongsByGenreAsync(SongGenres genre)
     {
         return await _context.Songs
+            .Include(s => s.musician_Songs)
+            .ThenInclude(ms => ms.Musician)
             .Where(s => s.Genre == genre).ToListAsync();
     }
     public async Task SaveChanges() => await _context.SaveChangesAsync();

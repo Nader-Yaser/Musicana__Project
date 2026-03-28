@@ -16,6 +16,7 @@ public class EditInstrumentDto
 
     [StringLength(500, ErrorMessage = "Description cannot exceed 500 characters")]
     public string? Description { get; set; }
+    [Required]
     [AllowedExtensions]
     public IFormFile? Image { get; set; }
 }
