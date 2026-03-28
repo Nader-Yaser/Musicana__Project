@@ -5,6 +5,7 @@ using Musicana.Api.DependencyInjection;
 using Musicana.Api.Repositories;
 using Musicana.Api.Services;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.AspNetCore.HttpOverrides;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -69,6 +70,13 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 
 }
+
+app.UseForwardedHeaders(new ForwardedHeadersOptions
+{
+    ForwardedHeaders = ForwardedHeaders.XForwardedFor |
+                    ForwardedHeaders.XForwardedProto |
+                    ForwardedHeaders.XForwardedHost
+});
 
 app.UseHttpsRedirection();
 
