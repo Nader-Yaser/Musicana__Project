@@ -20,13 +20,16 @@ public class FavouriteService : IFavouriteService
 
     private HttpRequest Request => _httpContextAccessor.HttpContext!.Request;
 
-    public async Task<IEnumerable<FavouriteResponse>> GetAllFavouritesAsync()
+    public async Task<FavouriteResponse?> GetFavouritesAsync()
     {
-        var favourites = await _favouriteRepo.GetAllFavouritesAsync();
-        return FavouriteResponse.FromModels(favourites, Request);
+        var favourite = await _favouriteRepo.GetDefaultFavouriteAsync();
+        if (favourite is null)
+            throw new Exception("Favourite list not found");
+
+        return FavouriteResponse.FromModel(favourite, Request);
     }
 
-    public async Task AddToFavouritesAsync(int songId)
+    public async Task AddSongToFavouritesAsync(int songId)
     {
         if (songId <= 0)
             throw new ArgumentException("Invalid Song Id");
@@ -35,35 +38,48 @@ public class FavouriteService : IFavouriteService
         if (song is null)
             throw new Exception("Song not found");
 
-        var alreadyFavourite = await _favouriteRepo.IsFavouriteAsync(songId);
-        if (alreadyFavourite)
+        var favourite = await _favouriteRepo.GetDefaultFavouriteAsync();
+        if (favourite is null)
+            throw new Exception("Favourite list not found");
+
+        var alreadyExists = await _favouriteRepo.IsSongInFavouriteAsync(favourite.Id, songId);
+        if (alreadyExists)
             throw new Exception("Song is already in favourites");
 
-        var favourite = new Favourite
+        var favouriteSong = new Favourite_Song
         {
+            FavouriteId = favourite.Id,
             SongId = songId,
             AddedAt = DateTime.UtcNow
         };
 
-        await _favouriteRepo.AddFavouriteAsync(favourite);
+        await _favouriteRepo.AddSongToFavouriteAsync(favouriteSong);
         await _favouriteRepo.SaveChanges();
     }
 
-    public async Task RemoveFromFavouritesAsync(int songId)
+    public async Task RemoveSongFromFavouritesAsync(int songId)
     {
         if (songId <= 0)
             throw new ArgumentException("Invalid Song Id");
 
-        var favourite = await _favouriteRepo.GetFavouriteBySongIdAsync(songId);
+        var favourite = await _favouriteRepo.GetDefaultFavouriteAsync();
         if (favourite is null)
+            throw new Exception("Favourite list not found");
+
+        var favouriteSong = favourite.favourite_Songs
+            .FirstOrDefault(fs => fs.SongId == songId);
+        if (favouriteSong is null)
             throw new Exception("Song is not in favourites");
 
-        await _favouriteRepo.RemoveFavourite(favourite);
+        await _favouriteRepo.RemoveSongFromFavourite(favouriteSong);
         await _favouriteRepo.SaveChanges();
     }
 
     public async Task<bool> IsFavouriteAsync(int songId)
     {
-        return await _favouriteRepo.IsFavouriteAsync(songId);
+        var favourite = await _favouriteRepo.GetDefaultFavouriteAsync();
+        if (favourite is null) return false;
+
+        return await _favouriteRepo.IsSongInFavouriteAsync(favourite.Id, songId);
     }
 }

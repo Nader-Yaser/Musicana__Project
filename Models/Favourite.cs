@@ -3,9 +3,8 @@ namespace Musicana.Api.Models;
 public class Favourite
 {
     public int Id { get; set; }
-    public DateTime AddedAt { get; set; }
+    public DateTime CreatedAt { get; set; }
 
-    // FK — كل Favourite مرتبط بأغنية واحدة
-    public int SongId { get; set; }
-    public Song Song { get; set; }
+    // Many-to-Many with Songs
+    public List<Favourite_Song> favourite_Songs { get; set; }
 }

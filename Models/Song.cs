@@ -19,6 +19,6 @@ public class Song
 
     public List<Musician_Song> musician_Songs { get; set; }
     public List<Playlist_Song> playlist_Songs { get; set; }
-    public Favourite? Favourite { get; set; }
+    public List<Favourite_Song> favourite_Songs { get; set; }
     public void IncrementPlayCount() => PlayCount++;
 }

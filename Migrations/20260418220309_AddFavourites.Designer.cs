@@ -12,7 +12,7 @@ using Musicana.Api.Data;
 namespace Musicana.Api.Migrations
 {
     [DbContext(typeof(MusicanaDbContext))]
-    [Migration("20260418213012_AddFavourites")]
+    [Migration("20260418220309_AddFavourites")]
     partial class AddFavourites
     {
         /// <inheritdoc />
@@ -121,18 +121,37 @@ namespace Musicana.Api.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("AddedAt")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Favourites", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        });
+                });
+
+            modelBuilder.Entity("Musicana.Api.Models.Favourite_Song", b =>
+                {
+                    b.Property<int>("FavouriteId")
+                        .HasColumnType("int");
 
                     b.Property<int>("SongId")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.Property<DateTime>("AddedAt")
+                        .HasColumnType("datetime2");
 
-                    b.HasIndex("SongId")
-                        .IsUnique();
+                    b.HasKey("FavouriteId", "SongId");
 
-                    b.ToTable("Favourites", (string)null);
+                    b.HasIndex("SongId");
+
+                    b.ToTable("Favourite_Songs", (string)null);
                 });
 
             modelBuilder.Entity("Musicana.Api.Models.Instrument", b =>
@@ -742,13 +761,21 @@ namespace Musicana.Api.Migrations
                     b.Navigation("Musician");
                 });
 
-            modelBuilder.Entity("Musicana.Api.Models.Favourite", b =>
+            modelBuilder.Entity("Musicana.Api.Models.Favourite_Song", b =>
                 {
-                    b.HasOne("Musicana.Api.Models.Song", "Song")
-                        .WithOne("Favourite")
-                        .HasForeignKey("Musicana.Api.Models.Favourite", "SongId")
+                    b.HasOne("Musicana.Api.Models.Favourite", "Favourite")
+                        .WithMany("favourite_Songs")
+                        .HasForeignKey("FavouriteId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Musicana.Api.Models.Song", "Song")
+                        .WithMany("favourite_Songs")
+                        .HasForeignKey("SongId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Favourite");
 
                     b.Navigation("Song");
                 });
@@ -825,6 +852,11 @@ namespace Musicana.Api.Migrations
                     b.Navigation("Songs");
                 });
 
+            modelBuilder.Entity("Musicana.Api.Models.Favourite", b =>
+                {
+                    b.Navigation("favourite_Songs");
+                });
+
             modelBuilder.Entity("Musicana.Api.Models.Instrument", b =>
                 {
                     b.Navigation("musician_Instruments");
@@ -846,7 +878,7 @@ namespace Musicana.Api.Migrations
 
             modelBuilder.Entity("Musicana.Api.Models.Song", b =>
                 {
-                    b.Navigation("Favourite");
+                    b.Navigation("favourite_Songs");
 
                     b.Navigation("musician_Songs");
 

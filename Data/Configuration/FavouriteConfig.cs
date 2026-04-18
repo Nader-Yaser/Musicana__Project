@@ -10,16 +10,13 @@ public class FavouriteConfig : IEntityTypeConfiguration<Favourite>
     {
         builder.ToTable("Favourites");
         builder.HasKey(f => f.Id);
+        builder.Property(f => f.CreatedAt).IsRequired();
 
-        builder.Property(f => f.AddedAt).IsRequired();
-
-        // Unique — كل أغنية ممكن تتضاف مرة واحدة بس
-        builder.HasIndex(f => f.SongId).IsUnique();
-
-        // العلاقة: كل Favourite مرتبط بأغنية واحدة
-        builder.HasOne(f => f.Song)
-            .WithOne(s => s.Favourite)
-            .HasForeignKey<Favourite>(f => f.SongId)
-            .OnDelete(DeleteBehavior.Cascade);
+        // Seed — مفضلة واحدة افتراضية (بعدين كل User هيكون ليه واحدة)
+        builder.HasData(new Favourite
+        {
+            Id = 1,
+            CreatedAt = new DateTime(2026, 1, 1)
+        });
     }
 }

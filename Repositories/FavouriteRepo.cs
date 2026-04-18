@@ -9,41 +9,38 @@ public class FavouriteRepo : IFavouriteRepo
     private readonly MusicanaDbContext _context;
     public FavouriteRepo(MusicanaDbContext context) => _context = context;
 
-    public async Task<IEnumerable<Favourite>> GetAllFavouritesAsync()
+    public async Task<Favourite?> GetFavouriteByIdAsync(int favouriteId)
     {
         return await _context.Favourites
-            .Include(f => f.Song)
-            .OrderByDescending(f => f.AddedAt)
-            .ToListAsync();
+            .Include(f => f.favourite_Songs)
+            .ThenInclude(fs => fs.Song)
+            .FirstOrDefaultAsync(f => f.Id == favouriteId);
     }
 
-    public async Task<Favourite?> GetFavouriteBySongIdAsync(int songId)
+    public async Task<Favourite?> GetDefaultFavouriteAsync()
     {
         return await _context.Favourites
-            .Include(f => f.Song)
-            .FirstOrDefaultAsync(f => f.SongId == songId);
+            .Include(f => f.favourite_Songs)
+            .ThenInclude(fs => fs.Song)
+            .FirstOrDefaultAsync();
     }
 
-    public async Task AddFavouriteAsync(Favourite favourite)
+    public async Task AddSongToFavouriteAsync(Favourite_Song favouriteSong)
     {
-        await _context.Favourites.AddAsync(favourite);
+        await _context.Favourite_Songs.AddAsync(favouriteSong);
     }
 
-    public void RemoveFavourite(Favourite favourite)
+    public Task RemoveSongFromFavourite(Favourite_Song favouriteSong)
     {
-        _context.Favourites.Remove(favourite);
+        _context.Favourite_Songs.Remove(favouriteSong);
+        return Task.CompletedTask;
     }
 
-    public async Task<bool> IsFavouriteAsync(int songId)
+    public async Task<bool> IsSongInFavouriteAsync(int favouriteId, int songId)
     {
-        return await _context.Favourites.AnyAsync(f => f.SongId == songId);
+        return await _context.Favourite_Songs
+            .AnyAsync(fs => fs.FavouriteId == favouriteId && fs.SongId == songId);
     }
 
     public async Task SaveChanges() => await _context.SaveChangesAsync();
-
-    Task IFavouriteRepo.RemoveFavourite(Favourite favourite)
-    {
-        _context.Favourites.Remove(favourite);
-        return Task.CompletedTask;
-    }
 }

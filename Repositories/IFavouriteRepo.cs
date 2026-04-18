@@ -4,10 +4,10 @@ namespace Musicana.Api.Repositories;
 
 public interface IFavouriteRepo
 {
-    Task<IEnumerable<Favourite>> GetAllFavouritesAsync();
-    Task<Favourite?> GetFavouriteBySongIdAsync(int songId);
-    Task AddFavouriteAsync(Favourite favourite);
-    Task RemoveFavourite(Favourite favourite);
-    Task<bool> IsFavouriteAsync(int songId);
+    Task<Favourite?> GetFavouriteByIdAsync(int favouriteId);
+    Task<Favourite?> GetDefaultFavouriteAsync();
+    Task AddSongToFavouriteAsync(Favourite_Song favouriteSong);
+    Task RemoveSongFromFavourite(Favourite_Song favouriteSong);
+    Task<bool> IsSongInFavouriteAsync(int favouriteId, int songId);
     Task SaveChanges();
 }

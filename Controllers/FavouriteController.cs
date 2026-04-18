@@ -16,7 +16,7 @@ public class FavouriteController : ControllerBase
     {
         try
         {
-            var favourites = await _service.GetAllFavouritesAsync();
+            var favourites = await _service.GetFavouritesAsync();
             return Ok(favourites);
         }
         catch (Exception ex) { return BadRequest(ex.Message); }
@@ -27,7 +27,7 @@ public class FavouriteController : ControllerBase
     {
         try
         {
-            await _service.AddToFavouritesAsync(songId);
+            await _service.AddSongToFavouritesAsync(songId);
             return Ok("Song added to favourites successfully");
         }
         catch (Exception ex) { return BadRequest(ex.Message); }
@@ -38,7 +38,7 @@ public class FavouriteController : ControllerBase
     {
         try
         {
-            await _service.RemoveFromFavouritesAsync(songId);
+            await _service.RemoveSongFromFavouritesAsync(songId);
             return Ok("Song removed from favourites successfully");
         }
         catch (Exception ex) { return BadRequest(ex.Message); }
