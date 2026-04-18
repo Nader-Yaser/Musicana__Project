@@ -16,6 +16,7 @@ public class MusicanaDbContext : DbContext
     public DbSet<Album> Albums { get; set; }
     public DbSet<Playlist> Playlists { get; set; }
     public DbSet<Playlist_Song> Playlist_Songs { get; set; }
+    public DbSet<Favourite> Favourites { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
