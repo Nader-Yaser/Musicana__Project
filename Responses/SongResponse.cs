@@ -18,13 +18,7 @@ public class SongResponse
     public static SongResponse FromModel(Song song, HttpRequest request)
     {
 
-        // var scheme = request.Headers.ContainsKey("X-Forwarded-Proto")
-        // ? request.Headers["X-Forwarded-Proto"].ToString()
-        // : request.Scheme;
 
-        // var host = request.Headers.ContainsKey("X-Forwarded-Host")
-        //     ? request.Headers["X-Forwarded-Host"].ToString()
-        //     : request.Host.ToString();
 
         return new SongResponse
         {

@@ -115,12 +115,10 @@ public class PlaylistService : IPlaylistService
         if (song is null)
             throw new Exception("Song not found");
 
-        // تأكد إن الأغنية مش موجودة في الـ Playlist بالفعل
         var alreadyExists = playlist.playlist_Songs.Any(ps => ps.SongId == songId);
         if (alreadyExists)
             throw new Exception("Song already exists in this playlist");
 
-        // الترتيب = آخر أغنية + 1
         var nextOrder = playlist.playlist_Songs.Any()
             ? playlist.playlist_Songs.Max(ps => ps.Order) + 1
             : 1;

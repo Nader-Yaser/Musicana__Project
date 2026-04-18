@@ -17,13 +17,11 @@ public class AlbumConfig : IEntityTypeConfiguration<Album>
         builder.Property(a => a.CoverImagePath);
         builder.Property(a => a.IsDeleted).IsRequired();
 
-        // One Musician has Many Albums
         builder.HasOne(a => a.Musician)
             .WithMany(m => m.Albums)
             .HasForeignKey(a => a.MusicianId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        // One Album has Many Songs (Nullable FK)
         builder.HasMany(a => a.Songs)
             .WithOne(s => s.Album)
             .HasForeignKey(s => s.AlbumId)

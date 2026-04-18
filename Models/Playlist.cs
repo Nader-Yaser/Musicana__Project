@@ -8,6 +8,5 @@ public class Playlist
     public string? CoverImagePath { get; set; }
     public bool IsDeleted { get; set; }
 
-    // Many-to-Many with Songs
     public List<Playlist_Song> playlist_Songs { get; set; }
 }

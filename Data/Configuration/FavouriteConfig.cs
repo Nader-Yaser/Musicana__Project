@@ -12,7 +12,6 @@ public class FavouriteConfig : IEntityTypeConfiguration<Favourite>
         builder.HasKey(f => f.Id);
         builder.Property(f => f.CreatedAt).IsRequired();
 
-        // Seed — مفضلة واحدة افتراضية (بعدين كل User هيكون ليه واحدة)
         builder.HasData(new Favourite
         {
             Id = 1,
