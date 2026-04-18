@@ -18,5 +18,6 @@ public class Song
     public Album? Album { get; set; }
 
     public List<Musician_Song> musician_Songs { get; set; }
+    public List<Playlist_Song> playlist_Songs { get; set; }
     public void IncrementPlayCount() => PlayCount++;
 }
