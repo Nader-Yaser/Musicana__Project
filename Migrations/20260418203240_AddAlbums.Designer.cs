@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Musicana.Api.Data;
 
@@ -11,9 +12,11 @@ using Musicana.Api.Data;
 namespace Musicana.Api.Migrations
 {
     [DbContext(typeof(MusicanaDbContext))]
-    partial class MusicanaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260418203240_AddAlbums")]
+    partial class AddAlbums
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -108,47 +111,6 @@ namespace Musicana.Api.Migrations
                             ReleaseDate = new DateTime(2024, 2, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Title = "Album 5"
                         });
-                });
-
-            modelBuilder.Entity("Musicana.Api.Models.Favourite", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Favourites", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        });
-                });
-
-            modelBuilder.Entity("Musicana.Api.Models.Favourite_Song", b =>
-                {
-                    b.Property<int>("FavouriteId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SongId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("AddedAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("FavouriteId", "SongId");
-
-                    b.HasIndex("SongId");
-
-                    b.ToTable("Favourite_Songs", (string)null);
                 });
 
             modelBuilder.Entity("Musicana.Api.Models.Instrument", b =>
@@ -449,134 +411,6 @@ namespace Musicana.Api.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Musicana.Api.Models.Playlist", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("CoverImagePath")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Playlists", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CoverImagePath = "/CoverImages/playlist1.jpg",
-                            Description = "Relaxing songs for chill time",
-                            IsDeleted = false,
-                            Name = "Chill Vibes"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CoverImagePath = "/CoverImages/playlist2.jpg",
-                            Description = "High energy songs for workout",
-                            IsDeleted = false,
-                            Name = "Workout Mix"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CoverImagePath = "/CoverImages/playlist3.jpg",
-                            Description = "Best songs for driving",
-                            IsDeleted = false,
-                            Name = "Road Trip"
-                        });
-                });
-
-            modelBuilder.Entity("Musicana.Api.Models.Playlist_Song", b =>
-                {
-                    b.Property<int>("PlaylistId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SongId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Order")
-                        .HasColumnType("int");
-
-                    b.HasKey("PlaylistId", "SongId");
-
-                    b.HasIndex("SongId");
-
-                    b.ToTable("Playlist_Songs", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            PlaylistId = 1,
-                            SongId = 1,
-                            Order = 1
-                        },
-                        new
-                        {
-                            PlaylistId = 1,
-                            SongId = 3,
-                            Order = 2
-                        },
-                        new
-                        {
-                            PlaylistId = 1,
-                            SongId = 5,
-                            Order = 3
-                        },
-                        new
-                        {
-                            PlaylistId = 2,
-                            SongId = 2,
-                            Order = 1
-                        },
-                        new
-                        {
-                            PlaylistId = 2,
-                            SongId = 4,
-                            Order = 2
-                        },
-                        new
-                        {
-                            PlaylistId = 2,
-                            SongId = 6,
-                            Order = 3
-                        },
-                        new
-                        {
-                            PlaylistId = 3,
-                            SongId = 1,
-                            Order = 1
-                        },
-                        new
-                        {
-                            PlaylistId = 3,
-                            SongId = 7,
-                            Order = 2
-                        },
-                        new
-                        {
-                            PlaylistId = 3,
-                            SongId = 8,
-                            Order = 3
-                        });
-                });
-
             modelBuilder.Entity("Musicana.Api.Models.Song", b =>
                 {
                     b.Property<int>("Id")
@@ -758,25 +592,6 @@ namespace Musicana.Api.Migrations
                     b.Navigation("Musician");
                 });
 
-            modelBuilder.Entity("Musicana.Api.Models.Favourite_Song", b =>
-                {
-                    b.HasOne("Musicana.Api.Models.Favourite", "Favourite")
-                        .WithMany("favourite_Songs")
-                        .HasForeignKey("FavouriteId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Musicana.Api.Models.Song", "Song")
-                        .WithMany("favourite_Songs")
-                        .HasForeignKey("SongId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Favourite");
-
-                    b.Navigation("Song");
-                });
-
             modelBuilder.Entity("Musicana.Api.Models.Musician_Instrument", b =>
                 {
                     b.HasOne("Musicana.Api.Models.Instrument", "Instrument")
@@ -815,25 +630,6 @@ namespace Musicana.Api.Migrations
                     b.Navigation("Song");
                 });
 
-            modelBuilder.Entity("Musicana.Api.Models.Playlist_Song", b =>
-                {
-                    b.HasOne("Musicana.Api.Models.Playlist", "Playlist")
-                        .WithMany("playlist_Songs")
-                        .HasForeignKey("PlaylistId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Musicana.Api.Models.Song", "Song")
-                        .WithMany("playlist_Songs")
-                        .HasForeignKey("SongId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Playlist");
-
-                    b.Navigation("Song");
-                });
-
             modelBuilder.Entity("Musicana.Api.Models.Song", b =>
                 {
                     b.HasOne("Musicana.Api.Models.Album", "Album")
@@ -847,11 +643,6 @@ namespace Musicana.Api.Migrations
             modelBuilder.Entity("Musicana.Api.Models.Album", b =>
                 {
                     b.Navigation("Songs");
-                });
-
-            modelBuilder.Entity("Musicana.Api.Models.Favourite", b =>
-                {
-                    b.Navigation("favourite_Songs");
                 });
 
             modelBuilder.Entity("Musicana.Api.Models.Instrument", b =>
@@ -868,18 +659,9 @@ namespace Musicana.Api.Migrations
                     b.Navigation("musician_Songs");
                 });
 
-            modelBuilder.Entity("Musicana.Api.Models.Playlist", b =>
-                {
-                    b.Navigation("playlist_Songs");
-                });
-
             modelBuilder.Entity("Musicana.Api.Models.Song", b =>
                 {
-                    b.Navigation("favourite_Songs");
-
                     b.Navigation("musician_Songs");
-
-                    b.Navigation("playlist_Songs");
                 });
 #pragma warning restore 612, 618
         }

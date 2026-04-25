@@ -12,4 +12,5 @@ public class Musician
     public List<Musician_Song> musician_Songs { get; set; }
     public List<Musician_Instrument> musician_Instruments { get; set; }
 
+    public List<Album> Albums { get; set; }
 }
