@@ -1,9 +1,10 @@
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Musicana.Api.Models;
 
 namespace Musicana.Api.Data;
 
-public class MusicanaDbContext : DbContext
+public class MusicanaDbContext : IdentityDbContext<ApplicationUser>
 {
     public MusicanaDbContext(DbContextOptions<MusicanaDbContext> options) : base(options)
     {
