@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Musicana.Api.Requests;
 using Musicana.Api.Services;
@@ -6,6 +7,7 @@ namespace Musicana.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class AlbumController : ControllerBase
 {
     private readonly IAlbumService _service;
@@ -50,6 +52,7 @@ public class AlbumController : ControllerBase
         catch (Exception ex) { return BadRequest(ex.Message); }
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<IActionResult> CreateAlbumAsync([FromForm] CreateAlbumDto dto)
     {
@@ -64,6 +67,7 @@ public class AlbumController : ControllerBase
         catch (Exception ex) { return BadRequest(ex.Message); }
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPut("{id:int}")]
     public async Task<IActionResult> EditAlbumAsync(int id, [FromForm] EditAlbumDto dto)
     {
@@ -77,6 +81,7 @@ public class AlbumController : ControllerBase
         catch (Exception ex) { return BadRequest(ex.Message); }
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> DeleteAlbumAsync(int id)
     {
@@ -88,6 +93,7 @@ public class AlbumController : ControllerBase
         catch (Exception ex) { return BadRequest(ex.Message); }
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPost("{albumId:int}/songs/{songId:int}")]
     public async Task<IActionResult> AssignSongToAlbumAsync(int albumId, int songId)
     {
@@ -99,6 +105,7 @@ public class AlbumController : ControllerBase
         catch (Exception ex) { return BadRequest(ex.Message); }
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpDelete("songs/{songId:int}")]
     public async Task<IActionResult> RemoveSongFromAlbumAsync(int songId)
     {

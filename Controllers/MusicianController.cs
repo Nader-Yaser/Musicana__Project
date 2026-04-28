@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Musicana.Api.Models;
 using Musicana.Api.Requests;
@@ -8,6 +9,7 @@ namespace Musicana.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class MusicianController : ControllerBase
 {
     private readonly IMusicianService _service;
@@ -54,6 +56,7 @@ public class MusicianController : ControllerBase
         catch (Exception ex) { return BadRequest(ex.Message); }
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<IActionResult> CreateMusicianAsync(CreateMusicianDto musicianDto)
     {
@@ -67,6 +70,7 @@ public class MusicianController : ControllerBase
         catch (Exception ex) { return BadRequest(ex.Message); }
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> DeleteMusicianAsync(int id)
     {
@@ -78,6 +82,7 @@ public class MusicianController : ControllerBase
         catch (Exception ex) { return BadRequest(ex.Message); }
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPut("{id:int}")]
     public async Task<IActionResult> UpdateMusicianAsync(int id, [FromBody] EditMusicianDto musicianDto)
     {
@@ -91,6 +96,7 @@ public class MusicianController : ControllerBase
         catch (Exception ex) { return BadRequest(ex.Message); }
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPost("assign-song")]
     public async Task<IActionResult> AssignSongToMusicianAsync([FromBody] AssignSongDto dto)
     {
@@ -105,6 +111,7 @@ public class MusicianController : ControllerBase
         catch (Exception ex) { return BadRequest(ex.Message); }
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPost("assign-instrument")]
     public async Task<IActionResult> AssignInstrumentToMusicianAsync([FromBody] AssignInstrumentDto dto)
     {
