@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Musicana.Api.Requests;
 using Musicana.Api.Services;
@@ -6,6 +7,7 @@ namespace Musicana.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class PlaylistController : ControllerBase
 {
     private readonly IPlaylistService _service;
@@ -50,6 +52,7 @@ public class PlaylistController : ControllerBase
         catch (Exception ex) { return BadRequest(ex.Message); }
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<IActionResult> CreatePlaylistAsync([FromForm] CreatePlaylistDto dto)
     {
@@ -64,6 +67,7 @@ public class PlaylistController : ControllerBase
         catch (Exception ex) { return BadRequest(ex.Message); }
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPut("{id:int}")]
     public async Task<IActionResult> EditPlaylistAsync(int id, [FromForm] EditPlaylistDto dto)
     {
@@ -77,6 +81,7 @@ public class PlaylistController : ControllerBase
         catch (Exception ex) { return BadRequest(ex.Message); }
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> DeletePlaylistAsync(int id)
     {
@@ -88,6 +93,7 @@ public class PlaylistController : ControllerBase
         catch (Exception ex) { return BadRequest(ex.Message); }
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPost("{playlistId:int}/songs/{songId:int}")]
     public async Task<IActionResult> AddSongToPlaylistAsync(int playlistId, int songId)
     {
@@ -99,6 +105,7 @@ public class PlaylistController : ControllerBase
         catch (Exception ex) { return BadRequest(ex.Message); }
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpDelete("{playlistId:int}/songs/{songId:int}")]
     public async Task<IActionResult> RemoveSongFromPlaylistAsync(int playlistId, int songId)
     {

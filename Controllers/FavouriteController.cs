@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Musicana.Api.Services;
 
@@ -5,6 +6,7 @@ namespace Musicana.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class FavouriteController : ControllerBase
 {
     private readonly IFavouriteService _service;
@@ -22,6 +24,7 @@ public class FavouriteController : ControllerBase
         catch (Exception ex) { return BadRequest(ex.Message); }
     }
 
+    [Authorize]
     [HttpPost("{songId:int}")]
     public async Task<IActionResult> AddToFavouritesAsync(int songId)
     {
@@ -33,6 +36,7 @@ public class FavouriteController : ControllerBase
         catch (Exception ex) { return BadRequest(ex.Message); }
     }
 
+    [Authorize]
     [HttpDelete("{songId:int}")]
     public async Task<IActionResult> RemoveFromFavouritesAsync(int songId)
     {

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Musicana.Api.Enums;
 using Musicana.Api.Requests;
@@ -7,6 +8,7 @@ namespace Musicana.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class SongController : ControllerBase
 {
     private readonly ISongService _service;
@@ -59,6 +61,7 @@ public class SongController : ControllerBase
         catch (Exception ex) { return BadRequest(ex.Message); }
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<IActionResult> CreateSongAsync([FromForm] CreateSongDto dto)
     {
@@ -73,6 +76,7 @@ public class SongController : ControllerBase
         catch (Exception ex) { return BadRequest(ex.Message); }
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPut("{id::int}")]
     public async Task<IActionResult> EditSongAsync(int id, [FromForm] EditSongDto dto)
     {
@@ -86,6 +90,7 @@ public class SongController : ControllerBase
         catch (Exception ex) { return BadRequest(ex.Message); }
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> DeleteSongAsync(int id)
     {
