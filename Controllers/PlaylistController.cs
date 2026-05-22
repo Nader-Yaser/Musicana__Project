@@ -52,7 +52,7 @@ public class PlaylistController : ControllerBase
         catch (Exception ex) { return BadRequest(ex.Message); }
     }
 
-    [Authorize(Roles = "Admin")]
+    [Authorize]
     [HttpPost]
     public async Task<IActionResult> CreatePlaylistAsync([FromForm] CreatePlaylistDto dto)
     {
@@ -67,7 +67,7 @@ public class PlaylistController : ControllerBase
         catch (Exception ex) { return BadRequest(ex.Message); }
     }
 
-    [Authorize(Roles = "Admin")]
+    [Authorize]
     [HttpPut("{id:int}")]
     public async Task<IActionResult> EditPlaylistAsync(int id, [FromForm] EditPlaylistDto dto)
     {
@@ -81,7 +81,7 @@ public class PlaylistController : ControllerBase
         catch (Exception ex) { return BadRequest(ex.Message); }
     }
 
-    [Authorize(Roles = "Admin")]
+    [Authorize]
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> DeletePlaylistAsync(int id)
     {
@@ -93,7 +93,7 @@ public class PlaylistController : ControllerBase
         catch (Exception ex) { return BadRequest(ex.Message); }
     }
 
-    [Authorize(Roles = "Admin")]
+    [Authorize]
     [HttpPost("{playlistId:int}/songs/{songId:int}")]
     public async Task<IActionResult> AddSongToPlaylistAsync(int playlistId, int songId)
     {
@@ -105,7 +105,7 @@ public class PlaylistController : ControllerBase
         catch (Exception ex) { return BadRequest(ex.Message); }
     }
 
-    [Authorize(Roles = "Admin")]
+    [Authorize]
     [HttpDelete("{playlistId:int}/songs/{songId:int}")]
     public async Task<IActionResult> RemoveSongFromPlaylistAsync(int playlistId, int songId)
     {

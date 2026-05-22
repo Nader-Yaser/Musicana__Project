@@ -19,7 +19,7 @@ public class Musician_SongService : IMusician_SongService
     }
     public async Task AssignSongToMusicianAsync(AssignSongDto dto)
     {
-        var musician = await _musicianRepo.GetMusicianByIdAsync(dto.MusicianId);
+        var musician = (await _musicianRepo.GetMusicianByIdAsync(dto.MusicianId));
         if (musician is null)
             throw new Exception("Musician not found");
 

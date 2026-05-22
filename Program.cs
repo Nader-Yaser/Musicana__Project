@@ -91,14 +91,6 @@ builder.Services.AddDbContext<MusicanaDbContext>(options =>
 
 var app = builder.Build();
 
-app.UseForwardedHeaders(new ForwardedHeadersOptions
-{
-    ForwardedHeaders = ForwardedHeaders.XForwardedFor |
-                    ForwardedHeaders.XForwardedProto |
-                    ForwardedHeaders.XForwardedHost,
-    KnownNetworks = { },
-    KnownProxies = { }
-});
 app.UseCors("AllowAll");
 
 using (var scope = app.Services.CreateScope())

@@ -22,7 +22,7 @@ public class UniqueSongTitlePerMusicianAttribute : ValidationAttribute
             return new ValidationResult("Song not found");
 
         var exists = _context.Musician_Songs
-            .Any(ms => ms.Song.Title.ToLower() == song.Title.ToLower() 
+            .Any(ms => ms.Song.Title.ToLower() == song.Title.ToLower()
                     && ms.MusicianId == dto.MusicianId);
 
         if (exists)

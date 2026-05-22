@@ -16,17 +16,25 @@ public class FavouriteResponse
         {
             FavouriteId = favourite.Id,
             Songs = favourite.favourite_Songs?
-                .OrderByDescending(fs => fs.AddedAt)
-                .Select(fs => new FavouriteSongItem
-                {
-                    SongId = fs.SongId,
-                    Title = fs.Song.Title,
-                    Genre = fs.Song.Genre,
-                    CoverImageUrl = fs.Song.CoverImagePath != null
-                        ? $"{request.Scheme}://{request.Host}{fs.Song.CoverImagePath}"
-                        : null,
-                    AddedAt = fs.AddedAt
-                }).ToList() ?? new List<FavouriteSongItem>()
+                    .OrderByDescending(fs => fs.AddedAt)
+                    .Select(fs => new FavouriteSongItem
+                    {
+                        Musicians = fs.Song.musician_Songs?
+                                    .Select(ms => ms.Musician.Name)
+                                    .ToList() ?? new List<string>(),
+                        SongId = fs.SongId,
+                        Title = fs.Song.Title,
+                        Genre = fs.Song.Genre,
+                        Duration = fs.Song.Duration,
+                        FileUrl = fs.Song.FilePath != null
+                ? $"{request.Scheme}://{request.Host}{fs.Song.FilePath}"
+                : null,
+                        CoverImageUrl = fs.Song.CoverImagePath != null
+                ? $"{request.Scheme}://{request.Host}{fs.Song.CoverImagePath}"
+                : null,
+                        AddedAt = fs.AddedAt
+                    }).ToList() ?? new List<FavouriteSongItem>()
+
         };
     }
 }
@@ -36,6 +44,9 @@ public class FavouriteSongItem
     public int SongId { get; set; }
     public string Title { get; set; }
     public SongGenres Genre { get; set; }
+    public double Duration { get; set; }
     public string? CoverImageUrl { get; set; }
+    public string? FileUrl { get; set; }
     public DateTime AddedAt { get; set; }
+    public List<string> Musicians { get; set; } = new();
 }
